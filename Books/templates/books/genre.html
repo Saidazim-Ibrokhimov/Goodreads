@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} Book Genres {% endblock title %}
+
+{% block content %}
+<!-- Books in a particular genre -->
+<div class="row">
+	<div class="col-9">
+		<ul class="">
+		{% for bookgenre in genre.bookgenre_set.all %}
+			<div class="row mb-2">
+				<div class="col-1 me-5">
+                    <img class="small-book-cover" src="{{ bookgenre.book.cover_pic.url}}">
+                </div>
+                <div class="col-6">
+                	<b><a class="text-none text-muted" href="{% url 'books:detail' bookgenre.book.slug %}">
+                		{{ bookgenre.book.title }}
+            		</a></b>
+            		<br>
+            			<span class="me-1">Authored by</span><br>
+            		{% for bookauthor in bookgenre.book.bookauthor_set.all %}
+            			<img class="comment-pic" src="{{ bookauthor.author.author_image.url }}">
+            			<a class="text-none text-muted" href="{% url 'books:authors_profile' bookauthor.author.slug %}">
+            				{{ bookauthor.author }}
+            			</a>
+            			<br>
+            		{% endfor %}
+                </div>
+            </div>
+		{% endfor %}
+		</ul>
+	</div>
+	
+<!-- All genres -->
+		<div class="col-2 ms-5">
+			<h6> All genres </h6>
+			<ul class="book-genre">
+			{% for genre in genres %}
+				{% if not forloop.last %}
+				<li>
+					<a class="page-link" href="{% url 'books:genre' genre.id %}"> 
+						{{ genre.name }},
+					</a>
+				</li>
+				{% else %}
+				<li>
+					<a class="page-link" href="{% url 'books:genre' genre.id %}"> 
+						{{ genre.name }}.
+					</a>
+				</li>
+				{% endif  %}
+		{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endblock content %}

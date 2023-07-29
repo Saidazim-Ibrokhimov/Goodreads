@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Books list - Goodreads
+{% endblock title %}
+		
+{% block content %}
+<!-- Search form -->
+	<div class="row mb-3 search-formm">
+		<div class="col-4">
+			<form class="d-flex" method="get">
+				<input class="form-control me-3" type="text" name="q" placeholder="Search" value="{{search_query}}">
+				<button style="visibility: hidden;"></button>
+			</form>
+		</div>
+	</div>
+<!-- /Search form -->
+
+<!-- Books list -->
+	{% if page_obj %}
+		{% for book in page_obj.object_list %}
+			<div class="row mb-4">
+				<div class="col-2">
+					<a href="{% url 'books:detail' book.slug %}"> 
+						<img class="book-pic me-5" src="{{ book.cover_pic.url}}">
+					</a>
+				</div>
+				<div class="col-6 ms-5">
+					<a class="book-title" href="{% url 'books:detail' book.slug %}">
+						{{ book.title }}
+					</a>
+					<p class="blog-item__description">
+						{{ book.description | truncatewords:100 }}
+					</p>
+				</div>
+			</div>
+			{% endfor %}
+<!-- /Books list -->
+
+<!-- Pagination -->
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			  	{% if page_obj.has_previous %}
+			    	<li class="page-item me-1">
+						<a class="page-link" href="?page=1">&laquoFirst</a>
+					</li>
+			   		<li class="page-item me-1">
+						<a class="page-link" href="?page={{page_obj.previous_page_number}}">
+							Previous
+						</a>
+					</li>
+			   	{% endif%}
+			    	<li class="page-item active me-1">
+						<a class="page-link" href="#">
+							{{ page_obj.number }}
+						</a>
+					</li>
+			    {% if page_obj.has_next %}
+			   		<li class="page-item me-1">
+						<a class="page-link" href="{% url 'books:list' %}?page={{ page_obj.next_page_number }}">
+							Next
+						</a>
+					</li>
+			   		<li class="page-item me-1">
+						<a class="page-link" href="?page={{ page_obj.paginator.num_pages}}">
+							Last&raquo
+						</a>
+					</li>
+				{% endif %}
+			  </ul>
+			</nav>
+<!-- /Pagination -->
+
+	{% else %}
+		<h6 class="section-title center">No books found</h6>
+	{% endif %}
+{% endblock content %}

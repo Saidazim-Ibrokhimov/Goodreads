@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Profile page - Goodreads
+{% endblock title %}
+
+{% block content %}
+	<div class="image d-flex flex-column justify-content-center align-items-center">
+		<button class="btn btn-secondary">
+			<img src="{{user.profile_picture.url}}" alt="Profile picture" class="profile_pic">
+		</button>
+		<button class="btn btn-outline-success mt-2">Follow</button>
+		<span class="name mt-3">{{user.first_name}} {{user.last_name}}</span>
+		<span class="idd">@{{user.username}}</span>
+		<span class="idd">{{user.email}}</span>
+		<div class="d-flex mt-2"><a href="{% url 'users:profile_edit' %}" class="btn btn-dark">Edit profile</a></div>
+		<div class="px-2 rounded mt-4 date"><span class="join">Joined 	{{ user.date_joined | date:"M d, Y"}}</span></div>
+	</div>
+{% endblock content %}

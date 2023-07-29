@@ -1,0 +1,172 @@
+/* Core styles */
+body {
+  background-color: rgba(244,241,234,0.5);
+  font-family: sans-serif;
+  margin: 0px;
+}
+
+.container {
+  width: 1140px;
+  margin: 0 auto;
+}
+
+.to-uppercase {
+  text-transform: uppercase;
+}
+
+.section-subtitle {
+  letter-spacing: 2px;
+  font-size: 0.87rem;
+  font-weight: 500;
+  margin-bottom: 0.63rem;
+  color: #797979;
+  text-transform: uppercase;
+}
+
+.section-title {
+  margin-top: 0.31rem;
+  text-transform: capitalize;
+  color: #05364d;
+  font-size: 2.52rem;
+  line-height: 52px;
+  font-weight: 700;
+}
+
+.blur-line {
+  display: inline-block;
+  width: 80px;
+  height: 4px;
+  margin-left: 0.31rem;
+  background-color: rgba(237,35,159,0.6);
+  filter: blur(4px);
+  border-radius: 4px;
+  position: relative;
+  top: -2;
+}
+
+
+.button {
+  background: linear-gradient(to right, #1345e6 0%, #ed239f 51%, #1345e6 100%);
+  background-size: 200% auto;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.87rem;
+  font-weight: 500;
+  padding: 1.25rem 2.5rem;
+  color: white;
+}
+
+.button:hover {
+  background-position: right center;
+  color: #fff;
+}
+
+.clear-fix {
+  clear: both;
+}
+
+.block-content {
+  padding: 6.25rem 1.25rem;
+}
+
+.search-formm {
+  position: fixed;
+  top: 70px;
+  left: 1000px;
+  width: 700px;
+}
+
+.fa-brands {
+  position: relative;
+  top: 12px;
+  font-size: 20px;
+}
+
+.text-none{
+  text-decoration: none;
+}
+.profile_pic{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.book-pic{
+  width: 220px;
+  height: 300px;
+}
+
+.small-book-cover {
+  width: 64px;
+  /* height: 100px; */
+}
+
+
+.form{
+  width: 30%;
+  margin-left: 450px;
+}
+
+.comment-pic{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  width: 100%;
+  box-shadow: 0px 3px 16px 0px rgb(0 0 0 / 10%);
+  z-index: 10;
+}
+
+.main-header__brand {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 200px}
+
+.goodreads {
+  font-size: 30px;
+  color: gold;
+
+}
+.main-header__brand img{
+  width: 64px;
+  border-radius: 50px;
+}
+
+.main-navigation {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.main-navigation__item {
+  display: inline-block;
+  padding: 0.63rem;
+}
+
+.main-navigation__item a {
+  color: #a5364e;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.main-navigation__item a:hover {
+  color: #cfb6df;
+}
+
+.main-navigation__item.active a {
+  color: #cfb6df;
+}
+
+.d-menu {
+  position: relative;
+  left: 450px;
+}

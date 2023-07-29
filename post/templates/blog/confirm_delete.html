@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm post delete {% endblock title %}
+
+{% block content %} 
+	<h1>"{{ post.title }}" o'chirmoqchimisiz</h1>
+	<a class="btn btn-outline-dark" href="{% url 'post:delete' post.slug %}">Delete</a>
+	<a class="btn btn-outline-success" href="{% url 'post:detail' post.slug %}">Cancel</a>
+
+{% endblock content %} 

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ author.full_name }}'s profile - {% endblock title%}
+{% block content %}
+    <div class="author-profile_items">
+        <div class="author-profile_item ">
+            <div class="text-center">
+                <img class="img-account-profile mb-2" src="{{author.author_image.url}}">
+                <div class="small font-italic  mb-2">
+                    {{ author.full_name | title }}
+                </div>
+                <button class="btn btn-primary" type="button">Follow</button>
+            </div>
+        </div>
+        <div class="author-profile_item">
+            <h5 class="author-info">
+                <label class="author-label">First name</label>
+                <input class="author-input" type="text" value="{{ author.full_name}}" readonly>
+            </h5>
+            <h5 class="author-info">
+                <label class="author-label">Email</label>
+                <input class="author-input" type="text" value="{{ author.email}}" readonly>
+            </h5>
+            <h5 class="author-info"> 
+                <label class="author-label">Birth date</label>
+                <input class="author-input" type="text" value="{{ author.bday}}" readonly>
+            </h5>
+            <h5 class="author-info">
+                {% if author.dday %}
+                <label class="author-label">Died</label>
+                <input class="author-input" type="text" value="{{ author.dday}}" readonly>
+                {% endif %}
+            </h5>
+            <h5 class="author-info">
+                <label class="author-label">Website</label>
+                <input class="author-input" type="text" value="{{ author.website}}" readonly>
+            </h5>
+            <h5 class="author-info">
+                <label class="author-label">Birth place</label>
+                <input class="author-input" type="text" value="{{ author.birth_place}}" readonly></span>
+            </h5>
+        </div>
+    </div>
+    <div class="clear-fix"></div><hr>
+    <h6>Wan to read {{author.full_name}}'s books?</h6>
+    <div class="row">
+         <div class="col-4">
+            {% for book_author in books %}
+                <div class="row mb-2">
+                    <div class="col-1 me-5">
+                        <img class="small-book-cover" src="{{ book_author.book.cover_pic.url}}">
+                    </div>
+                    <div class="col-6">
+                        <b><a class="text-none text-muted" href="{% url 'books:detail' book_author.book.slug %}">{{ book_author.book.title }}</a></b>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-8 author_description">
+            {{author.bio}}            
+        </div>
+    </div>
+{% endblock content %}

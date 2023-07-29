@@ -1,0 +1,60 @@
+/* Book detail page */
+
+.detail-action {
+  margin-top: 10px;
+  width: 90%;
+}
+
+.book-title {
+  text-decoration: none;
+  font-size: 1.44rem;
+  font-weight: 500;
+  color: #05364d;
+}
+
+.book-detail_info a {
+  font-size: 20px;
+  font-weight: 400;
+  text-decoration: none;
+  color: #05364d;
+}
+
+.client-item__rate {
+  margin-top: 10px;
+  color: #FFD805;
+}
+
+.book-genre li {
+  display: inline-block;
+  list-style: none;
+}
+
+.book-genre li a {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+/* /Book detail page */
+
+/* Editions section */
+
+.edition-items {
+  margin-top: 1.25rem;
+}
+
+.edition-item__image img {
+  width: 130px;
+}
+
+.edition-item {
+  display: inline-block;
+  width: 10%;
+  margin-right: 3%;
+  box-sizing: border-box ;
+}
+
+.edition-item__info {
+  padding: 0.25rem;
+  color: #797979;
+}
+

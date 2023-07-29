@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load hitcount_tags%}
+{% block title %} {{ post.title }}{% endblock title %}
+
+{% block content %}
+	<div class="mt-4 p-5">
+  		<div class="card-body">
+    		<h1 class="card-title text-center mb-4" style="font-size: 70px;">{{ post.title }}</h1>
+    		<img class="card-img-top mb-3 " src="{{ post.image.url }}">
+    		<div class="mb-3 blog-item__short-details">
+    			<a href="#"> 
+    				<i class="fa fa-user"></i> 
+    				{{ post.muallif}}
+    			</a> 
+    		 	<span> 
+    		 		<i class="fa fa-calendar"></i>
+    		 		{{ post.published_date|date:'M d, Y' }}
+    		 	</span> 
+				<span class="text-muted"><i class="bi bi-eye me-1"></i>{% get_hit_count for post %}</span>
+    		 	{% if post.muallif == request.user %}  
+					<a class="ms-1" href="{% url 'post:update' post.slug %}"><i class="bi bi-pencil-square"></i></a>
+					<a class="ms-1" href="{% url 'post:confirm-delete' post.slug %}"><i class="bi bi-trash"></i></a>
+				{% endif %}
+    		</div>
+    		<p class=" fs-5 blog-item__description">{{ post.body|safe }}</p>
+  		</div>
+	</div>
+{% endblock content %}

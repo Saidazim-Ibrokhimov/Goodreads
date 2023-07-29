@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+{% block title %} Book detail - {% endblock title %}
+
+{% block content %}
+<!-- Book detail  -->
+	<div class="row mt-4 mb-4">
+		<div class="col-3 ">
+			<img class="book-pic" src="{{ book.cover_pic.url }}">
+			<button class="btn btn-dark detail-action">Want to read</button><br>
+			<button class="btn btn-outline-success detail-action">Buy on Amazon</button>
+		</div>
+		<div class="col-6 ms-5 book-detail_info">
+			<h1 class="book-title fs-1">{{ book.title }}</h1>
+
+			<!-- Authors of the book -->
+				{% for book_author in book.bookauthor_set.all %}
+					{% if forloop.last %}
+						<a href="{% url 'books:authors_profile' book_author.author.slug %}">
+							{{ book_author.author }}.
+						</a>
+					{% else %}
+						<a href="{% url 'books:authors_profile' book_author.author.slug %}">
+							{{ 	book_author.author }}
+						</a>,
+					{% endif %}
+				{% endfor %}
+			<!-- /Authors of the book -->
+				<div class="client-item__rate">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="bi bi-star"></i>
+                </div>
+			<p class="blog-item__description">{{ book.description | truncatewords:80 }}</p>
+
+			<!-- Genres of the book  -->
+			<ul class="book-genre">
+				<span class="me-1">Genres:</span>
+				{% for bookgenre in book_genre %}
+					{% if forloop.last %}
+						<li>
+							<a class="book-genre_name" href="{% url 'books:genre' bookgenre.genre.id %}">
+								{{ bookgenre.genre.name }}.
+							</a>
+						</li>
+					{% else %}
+						<li>
+							<a class="book-genre_name" href="{% url 'books:genre' bookgenre.genre.id %}">
+								{{ bookgenre.genre.name }},
+							</a>
+						</li>	
+					{% endif%}
+				{% endfor %}
+			</ul>
+			<!-- /Genres of the book  -->
+
+			<!--  Editions  -->
+			{% if editions %}
+				<div class="container">
+					<section class="editions">
+						<div class="section-subtitle">
+							Editions <span class="blur-line"></span>
+						</div>
+						<div class="edition-items">
+							{% for edition in editions %}
+								<div class="edition-item">
+									<div class="edition-item__image">
+										<a href="{% url 'books:edition' edition.id%}">
+											<img src="{{edition.cover_pic.url}}">
+										</a>
+									</div>
+									<div class="edition-item__info">
+										<span>{{edition.published_date |date:"Y"}}</span>
+										<br>
+										<span>{{edition.language}}</span><br>
+										<span>{{edition.cover}}</span>
+									</div>
+								</div>
+							{% endfor %}		
+						</div>
+					</section>
+ 				</div>
+ 			{% endif %}
+			<!-- /Editions  -->
+		</div>	
+	</div>
+<!-- /Book detail  -->
+
+<!-- Reviews -->
+<span class="section-subtitle">Leave a comment for <b>"{{book.title | truncatewords:4}}"</b></span>
+<div class="row">
+	<div class="col-6">
+		<form method="post" action="{% url 'books:reviews' book.slug %}">
+			{% csrf_token %}
+			{{ review_form | crispy }}
+			<button type="submit" class="btn btn-success">Add review</button>
+		</form>
+	</div>
+</div>
+	{%if book.bookreview_set.exists %}
+		<h2 class="mt-3 section-subtitle"> Reviews </h2><hr>
+		{% for review in book.bookreview_set.all %}
+			<div class="row d-flex mb-1">
+				<div class="col-0 d-flex mb-2">
+					<img class="comment-pic me-1" src="{{ review.user.profile_picture.url }}">
+					<div class="mt-3 ms-1">
+						<b>{{ review.user.username | title}}</b>
+						<span class="fst-italic text-muted">
+							rated it {{ review.stars_given }} stars
+						</span> |
+						<span class=" fw-lighter me-1">
+							{{ review.created_at }}	
+						</span> |
+
+						{% if review.user == request.user %}
+							<a class="ms-1" href="{% url 'books:edit_review' book.slug review.id %}">
+								<i class="bi bi-pencil-square"></i>
+							</a>
+							<a class="ms-1" href="{% url 'books:delete-review-confirm' book.slug review.id %}">
+								<i class="bi bi-trash"></i>
+							</a>
+						{% endif %}
+					</div>
+				</div>
+
+				<div class="col-6 ms-0">
+					<p class="shadow p-3 mb-5 bg-body-tertiary rounded fs-6 text-wrap bg-body-secondary border fst-italic p-2 overflow" style="width: 38rem; border-radius: 5px;">
+						{{review.comment}}
+					</p>
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
+<!-- /Reviews -->
+{% endblock content %}
+

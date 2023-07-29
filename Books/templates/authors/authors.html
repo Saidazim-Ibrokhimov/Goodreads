@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Author's profile - Goodreads {% endblock title %}
+
+{% block content %}
+	<div class="row mt-5">
+		<div class="col-3">
+			<img class="author-image rounded shadow-lg" src="{{ author.author_image.url }}">
+			<button class="mt-5 ms-4 btn btn-dark">Follow Author</button>
+		</div>
+		<div class="col-7">
+			<h4>{{ author.full_name }}</h4><hr>
+			<div class="row">
+				<div class="col-4">
+					<p class="fw-semibold"> Born </p><br>
+					{% if author.dday %}
+						<p class="fw-semibold"> Died </p>
+					{% endif %}
+					<p class="fw-semibold"> Website </p>
+					<p class="fw-semibold"> Email </p>
+				</div>
+				<div class="col-5">
+					<p>{{author.birth_place}}<br> {{author.bday}} </p>
+					{% if author.dday %}
+						<p> {{author.dday}} </p>
+					{% endif %}
+					<p> <a href="{{author.website}}">{{author.website}}</a></p>
+					<p> {{author.email}} | {{author.bio|wordcount}} </p>
+				</div>
+			</div>
+			<p  class="author_description fst-normal shadow-sm p-3 mb-5 bg-body-tertiary rounded">{{ author.bio }}</p>
+		</div>
+	</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} Editions {% endblock title %}
+
+{% block content %}
+	{% if edition %}
+			<div class="row mt-4 mb-4">
+				<div class="col-3 ">
+					<img class="book-pic" src="{{ edition.cover_pic.url }}">
+					<button class="btn btn-dark detail-action">Want to read</button><br>
+					<button class="btn btn-outline-success detail-action">Buy on Amazon</button>
+				</div>
+				<div class="col-6 ms-5 book-detail_info">
+					<h1 class="book-title fs-1">{{ edition.title }}</h1>
+						{% for book_author in book.bookauthor_set.all %}
+							{% if forloop.last %}
+								<a href="{% url 'books:authors_profile' book_author.author.slug %}">
+									{{ book_author.author }}.
+								</a>
+							{% else %}
+								<a href="{% url 'books:authors_profile' book_author.author.slug %}">
+									{{ 	book_author.author }}
+								</a>,
+							{% endif %}
+						{% endfor %}
+						<div class="client-item__rate">
+		                    <i class="fas fa-star"></i>
+		                    <i class="fas fa-star"></i>
+		                    <i class="fas fa-star"></i>
+		                    <i class="fas fa-star"></i>
+		                    <i class="bi bi-star"></i>
+		                </div>
+					<p class="blog-item__description">{{ edition.description | truncatewords:80 }}</p>
+
+					<h6>Published date - <span>{{edition.published_date}}</span></h6>
+					<h6>Language - <span>{{edition.language}}</span></h6>
+					<h6>Number of pages - <span>{{edition.pages}}</span></h6>
+					<h6>Cover - <span>{{edition.cover}}</span></h6>
+					<h6>ISBN - <span>{{edition.isbn}}</span></h6>
+		
+				</div>	
+			</div>
+		{%endif%}
+
+{% endblock content %}

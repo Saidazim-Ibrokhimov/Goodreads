@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+	Register page - Goodreads
+{% endblock title %}
+
+{% block content %}
+	<h1>Register</h1>
+
+	<form class="form" action="{% url 'users:register' %}" method="post">{%csrf_token%}
+		{{ form | crispy }}
+		<button class="btn btn-primary type="submit">submit</button>
+	</form>
+
+{% endblock content %}
