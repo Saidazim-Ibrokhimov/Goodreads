@@ -5,16 +5,54 @@
 
 {% block content %}
 <!-- Book detail  -->
-	<div class="row mt-4 mb-4">
-		<div class="col-3 ">
-			<img class="book-pic" src="{{ book.cover_pic.url }}">
-			<button class="btn btn-dark detail-action">Want to read</button><br>
-			<button class="btn btn-outline-success detail-action">Buy on Amazon</button>
+
+<div class="container">
+	<div class="book-detail__items">
+		<div class="book-detail__item">
+			<div class="book-deteail__item-image">
+				<img class="book-pic" src="{{ book.cover_pic.url }}">
+			</div>
+			{% if request.user.is_authenticated %}
+				<div class="book-detail__item-action btn-group">
+					<button type="button" class="btn btn-danger">Add to shelf</button>
+					<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+						<span class="visually-hidden">Toggle Dropdown</span>
+					</button>
+					<ul class="dropdown-menu">
+					{% for shelf in shelves %}
+					<li><a class="dropdown-item" href="{% url 'books:add-book-to-shelf' book.id shelf.id %}">{{shelf.name}}</a></li>
+					{% endfor %}
+					</ul>
+				</div>
+
+				{% comment %} Create new shelf {% endcomment %}
+					<button type="button" class="book-detail__item-action btn btn-outline-warning detail-action" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Create a shelf</button>
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-body">
+							<form method="post" action="{% url 'books:create-shelf' %}">{%csrf_token%}
+							<div class="mb-3">
+								<label for="message-text" class="col-form-label">Shelf name</label>
+								<input class="form-control" id="message-text" name="name">
+							</div>
+								<button type="submit" class="btn btn-primary">Create</button>
+							</form>
+						</div>
+						</div>
+					</div>
+					</div><br>
+				{% comment %} <!-- /Create new shelf --> {% endcomment %}
+			{% endif %}
 		</div>
-		<div class="col-6 ms-5 book-detail_info">
-			<h1 class="book-title fs-1">{{ book.title }}</h1>
+		
+		<div class="book-detail__item book-info">
+			<h3 class="book-detail__title">
+				{{ book.title }}
+			</h3>
 
 			<!-- Authors of the book -->
+			<div class="book-authors">
 				{% for book_author in book.bookauthor_set.all %}
 					{% if forloop.last %}
 						<a href="{% url 'books:authors_profile' book_author.author.slug %}">
@@ -26,40 +64,43 @@
 						</a>,
 					{% endif %}
 				{% endfor %}
+			</div>
 			<!-- /Authors of the book -->
-				<div class="client-item__rate">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="bi bi-star"></i>
-                </div>
-			<p class="blog-item__description">{{ book.description | truncatewords:80 }}</p>
+
+			<div class="book-rating">
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="bi bi-star"></i>
+			</div>
+			<p class="book-description">{{ book.description | truncatewords:80 }}</p>
 
 			<!-- Genres of the book  -->
-			<ul class="book-genre">
-				<span class="me-1">Genres:</span>
-				{% for bookgenre in book_genre %}
-					{% if forloop.last %}
-						<li>
-							<a class="book-genre_name" href="{% url 'books:genre' bookgenre.genre.id %}">
-								{{ bookgenre.genre.name }}.
-							</a>
-						</li>
-					{% else %}
-						<li>
-							<a class="book-genre_name" href="{% url 'books:genre' bookgenre.genre.id %}">
-								{{ bookgenre.genre.name }},
-							</a>
-						</li>	
-					{% endif%}
-				{% endfor %}
-			</ul>
+			<div class="genres">
+				<ul class="genre__details">
+					<span class="genre__title">Genres:</span>
+					{% for bookgenre in book_genre %}
+						{% if forloop.last %}
+							<li>
+								<a class="genre__name" href="{% url 'books:genre' bookgenre.genre.id %}">
+									{{ bookgenre.genre.name }}.
+								</a>
+							</li>
+						{% else %}
+							<li>
+								<a class="genre__name" href="{% url 'books:genre' bookgenre.genre.id %}">
+									{{ bookgenre.genre.name }},
+								</a>
+							</li>	
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
 			<!-- /Genres of the book  -->
 
 			<!--  Editions  -->
-			{% if editions %}
-				<div class="container">
+				{% if editions %}
 					<section class="editions">
 						<div class="section-subtitle">
 							Editions <span class="blur-line"></span>
@@ -82,58 +123,60 @@
 							{% endfor %}		
 						</div>
 					</section>
- 				</div>
- 			{% endif %}
-			<!-- /Editions  -->
-		</div>	
+				{% endif %}
+			<!-- /Editions -->
+		</div>
 	</div>
-<!-- /Book detail  -->
 
-<!-- Reviews -->
-<span class="section-subtitle">Leave a comment for <b>"{{book.title | truncatewords:4}}"</b></span>
-<div class="row">
-	<div class="col-6">
+	<!-- Reviews -->
+	<section class="reviews" id="reviews">
+		<h5 class="review-heading">Leave a comment for <b>"{{book.title | truncatewords:4}}"</b></h5>
 		<form method="post" action="{% url 'books:reviews' book.slug %}">
 			{% csrf_token %}
 			{{ review_form | crispy }}
 			<button type="submit" class="btn btn-success">Add review</button>
 		</form>
-	</div>
-</div>
-	{%if book.bookreview_set.exists %}
-		<h2 class="mt-3 section-subtitle"> Reviews </h2><hr>
-		{% for review in book.bookreview_set.all %}
-			<div class="row d-flex mb-1">
-				<div class="col-0 d-flex mb-2">
-					<img class="comment-pic me-1" src="{{ review.user.profile_picture.url }}">
-					<div class="mt-3 ms-1">
-						<b>{{ review.user.username | title}}</b>
-						<span class="fst-italic text-muted">
-							rated it {{ review.stars_given }} stars
-						</span> |
-						<span class=" fw-lighter me-1">
-							{{ review.created_at }}	
-						</span> |
+		{%if book.bookreview_set.exists %}
+			<h2 class="mt-3 section-subtitle"> Reviews </h2><hr>
+			{% for review in book.bookreview_set.all %}
+				<div class="row d-flex mb-1">
+					<div class="col-0 d-flex mb-2">
+						<img class="comment-pic me-1" src="{{ review.user.profile_picture.url }}">
+						<div class="mt-3 ms-1">
+							<b>{{ review.user.username | title}}</b>
+							<span class="fst-italic text-muted">
+								rated it {{ review.stars_given }} stars
+							</span> |
+							<span class=" fw-lighter me-1">
+								{{ review.created_at }}	
+							</span> |
 
-						{% if review.user == request.user %}
-							<a class="ms-1" href="{% url 'books:edit_review' book.slug review.id %}">
-								<i class="bi bi-pencil-square"></i>
-							</a>
-							<a class="ms-1" href="{% url 'books:delete-review-confirm' book.slug review.id %}">
-								<i class="bi bi-trash"></i>
-							</a>
-						{% endif %}
+							{% if review.user == request.user %}
+								<a class="ms-1" href="{% url 'books:edit_review' book.slug review.id %}">
+									<i class="bi bi-pencil-square"></i>
+								</a>
+								<a class="ms-1" href="{% url 'books:delete-review-confirm' book.slug review.id %}">
+									<i class="bi bi-trash"></i>
+								</a>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="col-6 ms-0">
+						<p class="shadow p-3 mb-5 bg-body-tertiary rounded fs-6 text-wrap bg-body-secondary border fst-italic p-2 overflow" style="width: 38rem; border-radius: 5px;">
+							{{review.comment}}
+						</p>
 					</div>
 				</div>
-
-				<div class="col-6 ms-0">
-					<p class="shadow p-3 mb-5 bg-body-tertiary rounded fs-6 text-wrap bg-body-secondary border fst-italic p-2 overflow" style="width: 38rem; border-radius: 5px;">
-						{{review.comment}}
-					</p>
-				</div>
-			</div>
-		{% endfor %}
-	{% endif %}
+			{% endfor %}
+		{% endif %}
+	</section>
 <!-- /Reviews -->
+</div>
+
+
+
+
+	
 {% endblock content %}
 

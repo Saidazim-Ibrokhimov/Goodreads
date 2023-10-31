@@ -104,12 +104,3 @@ class BlogDeleteView(View):
 		else:
 			messages.warning(request, 'You can not delete the post!')
 			return redirect(reverse('post:list'))
-
-	
-
-
-
-
-
-
-

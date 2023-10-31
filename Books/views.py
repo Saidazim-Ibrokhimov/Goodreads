@@ -1,11 +1,12 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator 
 from django.views import View
-from django.utils import timezone
+
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Book, BookReview, Author, BookAuthor, Genre, BookGenre, Editions
+from django.contrib.auth.decorators import login_required
+from .models import Book, BookReview, Author, Genre, Editions, Shelf
 from .forms import BookReviewForm
 
 # Create your views here.
@@ -17,7 +18,7 @@ class BookListView(View):
 
 		if search_query:
  			books = books.filter(title__icontains=search_query)
-
+			 
 		page_size = request.GET.get('page_size', 2)
 		paginator = Paginator(books, page_size)
 
@@ -40,10 +41,15 @@ class BookDetailView(View):
 				'review_form':review_form,
 				'bookauthors':bookauthors,
 				'book_genre':book_genre,
-				'editions':editions
+				'editions':editions,
 			}
+		
+		if request.user.is_authenticated:
+			shelves = Shelf.objects.filter(user=request.user)
+			context['shelves'] = shelves
  
 		return render(request, 'books/detail.html', context )
+
 
 class BookGenresView(View):
 	def get(self, request, id):
@@ -123,10 +129,20 @@ class AuthorProfileView(View):
 		return render(request, 'authors/author_page.html', {'author':author, 'books':books})
 
 
+@login_required
+def create_shelf(request):
+	if request.method == 'POST':
+		name = request.POST['name']
+		shelf = Shelf.objects.create(name=name, user=request.user)
+		return redirect('home_page')
+	return render(request, 'books/detail.html')
 
+@login_required
+def add_book_to_shelf(request, book_id, shelf_id):
+	book = get_object_or_404(Book, id=book_id)
+	shelf = get_object_or_404(Shelf, id=shelf_id)
 
+	shelf.book.add(book)
+	shelf.save()
 
-
-
-
-
+	return redirect(reverse('books:detail', kwargs={'book_slug':book.slug}))

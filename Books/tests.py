@@ -1,19 +1,22 @@
 from django.test import TestCase
 from django.urls import reverse
-from Books.models import Book, BookReview, Author, BookAuthor, Genre, BookGenre, Editions
+from Books.models import Book, BookReview, Author, BookAuthor, Genre, BookGenre, Editions, Shelf
 from users.models import CustomUser
+
+from datetime import datetime
+from pytz import timezone
 # Create your tests here.
 
 class BookTestCase(TestCase):
 	def test_no_books(self):
-		response = self.client.get(reverse('books:list')			)
+		response = self.client.get(reverse('books:list'))
 
 		self.assertContains(response, 'No books found.')
 
 	def test_books_list(self):
-		book1 = Book.objects.create(title='BookTitle1', slug='BookTitle1', description='BookDescriptio', isbn='BookIsbn1')
-		book2 = Book.objects.create(title='BookTitle2', slug='BookTitle2', description='BookDescriptio', isbn='BookIsbn2')
-		book3 = Book.objects.create(title='BookTitle3', slug='BookTitle3', description='BookDescription', isbn='BookIsbn3')
+		book1 = Book.objects.create(title='BookTitle1', slug='BookTitle1', published_date='2023-09-09', description='BookDescriptio', isbn='BookIsbn1')
+		book2 = Book.objects.create(title='BookTitle2', slug='BookTitle2', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn2')
+		book3 = Book.objects.create(title='BookTitle3', slug='BookTitle3', published_date='2023-09-08', description='BookDescription', isbn='BookIsbn3')
 
 		response = self.client.get(reverse('books:list') + '?page_size=2')
 		books = [book1, book2]
@@ -25,14 +28,25 @@ class BookTestCase(TestCase):
 		self.assertContains(response, book3.title)
 			
 	def test_book_detail(self):
-		book1 = Book.objects.create(title='BookTitle1', slug='BookTitle1', description='BookDescriptio', isbn='BookIsbn1')
-		book2 = Book.objects.create(title='BookTitle2', slug='BookTitle2', description='BookDescriptio', isbn='BookIsbn2')
-		book3 = Book.objects.create(title='BookTitle3', slug='BookTitle3', description='BookDescription', isbn='BookIsbn3')
+		user = CustomUser.objects.create(
+			username='saidazim',
+			first_name='saidazim',
+			last_name='ibrohimov',
+			email='email@gmail.com'
+		)
+		user.set_password('somecode')
+		user.save()
+
+		self.client.login(username='saidazim', password='somecode')
+
+		book1 = Book.objects.create(title='BookTitle1', slug='BookTitle1', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
+		book2 = Book.objects.create(title='BookTitle2', slug='BookTitle2', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn2')
+		book3 = Book.objects.create(title='BookTitle3', slug='BookTitle3', published_date='2023-09-08', description='BookDescription', isbn='BookIsbn3')
 
 		author1 = Author.objects.create(first_name='Alisheer', last_name='Navoiy', email='navoiy@gmail.com', slug='Alisher-Navoiy' )
 		author2 = Author.objects.create(first_name='Abdulla', last_name='Oripov', email='oripov@gmail.com', slug='Abdulla-Oripov' )
 		
-
+		shelves = Shelf.objects.filter(user=user)
 
 		genre1 = Genre.objects.create(name='Fantastic')
 		genre2 = Genre.objects.create(name='Fiction')
@@ -62,7 +76,10 @@ class BookTestCase(TestCase):
 
 			self.assertContains(response, genre1.name)
 			self.assertContains(response, genre2.name)
-			
+
+			for shelf in shelves:
+				self.assertContains(response, shelf.name)
+
 			# I do not know why but it is not worked
 			# self.assertContains(response, reverse('books:edition', kwargs={'id':edition.id}))
 			self.assertContains(response, edition.language)
@@ -75,7 +92,7 @@ class BookTestCase(TestCase):
 				self.assertContains(response, reverse('books:authors_profile', kwargs={'author_slug':bookauthor.author.slug}))
 
 	def test_edition_page(self):
-		book = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
+		book = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
 
 		edition = Editions.objects.create(
 				book=book,
@@ -103,9 +120,9 @@ class BookTestCase(TestCase):
 
 
 	def test_search_books(self):
-		book1 = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
-		book2 = Book.objects.create(title='news', slug='news', description='BookDescriptio', isbn='BookIsbn2')
-		book3 = Book.objects.create(title='dog', slug='dog', description='BookDescription', isbn='BookIsbn3')
+		book1 = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
+		book2 = Book.objects.create(title='news', slug='news', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn2')
+		book3 = Book.objects.create(title='dog', slug='dog', published_date='2023-09-08', description='BookDescription', isbn='BookIsbn3')
 
 		response = self.client.get(reverse('books:list') + '?q=sport')
 
@@ -125,7 +142,7 @@ class BookTestCase(TestCase):
 
 class BookReviewTestCase(TestCase):
 	def test_reviews(self):
-		book = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
+		book = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
 		user = CustomUser.objects.create(username='saidazim', first_name='saidazim', last_name='ibrohimov', email='email@gmail.co,')
 		user.set_password('somecode')
 		user.save()
@@ -147,7 +164,7 @@ class BookReviewTestCase(TestCase):
 		self.assertEqual(review[0].user, user)
 
 	def test_wrong_rating(self):
-		book = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
+		book = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
 		user = CustomUser.objects.create(
 			username='saidazim', 
 			first_name='saidazim', 
@@ -170,7 +187,7 @@ class BookReviewTestCase(TestCase):
 		self.assertEqual(review.count(), 0)
 
 	def test_review_confirm_page(self):
-		book = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
+		book = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
 		user = CustomUser.objects.create(
 			username='saidazim', 
 			first_name='saidazim', 
@@ -192,7 +209,7 @@ class BookReviewTestCase(TestCase):
 		self.assertEqual(review.comment, 'Good book')
 
 	def test_review_delete(self):
-		book = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
+		book = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
 		user = CustomUser.objects.create(
 			username='saidazim', 
 			first_name='saidazim', 
@@ -221,7 +238,17 @@ class BookReviewTestCase(TestCase):
 
 class BookAuthorTestCase(TestCase):
 	def test_book_author(self):
-		book = Book.objects.create(title="Hamsa", slug="Hamsa", isbn="123421", description="Hamsa Description")
+		user = CustomUser.objects.create(
+			username='saidazim',
+			first_name='saidazim',
+			last_name='ibrohimov',
+			email='email@gmail.com'
+		)
+		user.set_password('somecode')
+		user.save()
+
+		self.client.login(username='saidazim', password='somecode')
+		book = Book.objects.create(title="Hamsa", slug="Hamsa", isbn="123421", published_date='2023-09-08', description="Hamsa Description")
 		author = Author.objects.create(
 			first_name='Alisher', 
 			last_name='Navoiy', 
@@ -242,8 +269,8 @@ class BookAuthorTestCase(TestCase):
 		self.assertContains(response, reverse('books:authors_profile', kwargs={'author_slug':author.slug}))
 
 	def test_author_page(self):
-		book = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
-		book2 = Book.objects.create(title="Hamsa", slug="Hamsa", isbn="123421", description="Hamsa Description")
+		book = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
+		book2 = Book.objects.create(title="Hamsa", slug="Hamsa", isbn="123421", published_date='2023-09-08', description="Hamsa Description")
 
 		author = Author.objects.create(
 			first_name='Alisher', 
@@ -290,10 +317,10 @@ class BookAuthorTestCase(TestCase):
 
 class BookGenreTestCase(TestCase):
 	def test_genre_page(self):
-		book1 = Book.objects.create(title='sport', slug='sport', description='BookDescriptio', isbn='BookIsbn1')
-		book2 = Book.objects.create(title='news', slug='news', description='BookDescriptio', isbn='BookIsbn2')
-		book3 = Book.objects.create(title='dog', slug='dog', description='BookDescription', isbn='BookIsbn3')
-		book4 = Book.objects.create(title='cat', slug='cat', description='BookDescriptioncat', isbn='BookIsbn3cat')
+		book1 = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
+		book2 = Book.objects.create(title='news', slug='news', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn2')
+		book3 = Book.objects.create(title='dog', slug='dog', published_date='2023-09-08', description='BookDescription', isbn='BookIsbn3')
+		book4 = Book.objects.create(title='cat', slug='cat', published_date='2023-09-08', description='BookDescriptioncat', isbn='BookIsbn3cat')
 
 		genre1 = Genre.objects.create(name='Fantastic')
 		genre2 = Genre.objects.create(name='Fiction')
@@ -326,4 +353,36 @@ class BookGenreTestCase(TestCase):
 		self.assertContains(response, genre2)
 		self.assertContains(response, genre1)
 		self.assertTemplateUsed(response, 'books/genre.html')
+
+class ShelfTestCase(TestCase):
+	def test_create_shelf(self):
+		user = CustomUser.objects.create(
+			username='saidazim',
+			first_name='saidazim',
+			last_name='ibrohimov',
+			email='email@gmail.com'
+		)
+		user.set_password('somecode')
+		user.save()
+
+		self.client.login(username='saidazim', password='somecode')
+
+		response = self.client.post(reverse('books:create-shelf'), data={'name':'New shelf'})
+
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(response.url, reverse('home_page'))
+
+	def test_add_book_to_shelf(self):
+		user = CustomUser.objects.create(
+			username='saidazim',
+			first_name='saidazim',
+			last_name='ibrohimov',
+			email='email@gmail.com'
+		)
+		user.set_password('somecode')
+		user.save()
+
+		book1 = Book.objects.create(title='sport', slug='sport', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn1')
+		book2 = Book.objects.create(title='news', slug='news', published_date='2023-09-08', description='BookDescriptio', isbn='BookIsbn2')
+
 

@@ -1,7 +1,9 @@
 /* Core styles */
 body {
-  background-color: rgba(244,241,234,0.5);
-  font-family: sans-serif;
+  font-family: 'Roboto' sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: 0px;
 }
 
@@ -57,6 +59,37 @@ body {
   color: white;
 }
 
+input[type=text],
+input[type=file],
+input[type=number],
+input[type=search], 
+input[type=email], 
+input[type=number], 
+input[type=password], 
+textarea,
+.input-group {
+  background: #FFFFFF;
+  border-radius: 3px;
+  border: #DCD6CC 1px solid;
+  color: #333333;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  resize: none;
+  width: 400px;
+  padding: 5px;
+}
+
+input[type=text]:focus,
+input[type=number]:focus,
+input[type=search]:focus, 
+input[type=email]:focus, 
+input[type=number]:focus, 
+input[type=password]:focus, 
+textarea:focus {
+  box-shadow: 0 0 4px rgba(185,173,153,0.5);
+  border-color: #B9AD99;
+  outline: 0px;
+}
+
 .button:hover {
   background-position: right center;
   color: #fff;
@@ -70,22 +103,12 @@ body {
   padding: 6.25rem 1.25rem;
 }
 
-.search-formm {
-  position: fixed;
-  top: 70px;
-  left: 1000px;
-  width: 700px;
-}
-
 .fa-brands {
   position: relative;
   top: 12px;
   font-size: 20px;
 }
 
-.text-none{
-  text-decoration: none;
-}
 .profile_pic{
   width: 200px;
   height: 200px;
@@ -102,38 +125,41 @@ body {
   /* height: 100px; */
 }
 
-
-.form{
-  width: 30%;
-  margin-left: 450px;
-}
-
 .comment-pic{
-  width: 50px;
-  height: 50px;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
 }
 
+/* Header */
+
+.main-header .container {
+  display: flex;
+  align-items: center;
+}
+
 .main-header {
+  height: 80px;
   position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
   width: 100%;
-  box-shadow: 0px 3px 16px 0px rgb(0 0 0 / 10%);
+  background: #F4F1EA;
+  pointer-events: auto;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
   z-index: 10;
 }
 
 .main-header__brand {
   display: inline-block;
-  vertical-align: middle;
-  font-size: 200px}
-
-.goodreads {
-  font-size: 30px;
-  color: gold;
-
+  height: 50px;
+  order: initial;
+  background: url(https://s.gr-assets.com/assets/layout/header/goodreads_logo.svg) no-repeat;
+  background-position: center;
+  background-size: 140px 30px;
+  margin: 0 16px 0 15px;
+  width: 140px; 
 }
+
 .main-header__brand img{
   width: 64px;
   border-radius: 50px;
@@ -151,22 +177,88 @@ body {
 }
 
 .main-navigation__item a {
-  color: #a5364e;
+  display: inline-block;
+  color: #382110;
+  text-transform: capitalize;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 16px;
+  line-height: 50px;
+  padding: 0 10px;
   text-decoration: none;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  font-weight: 500;
 }
 
 .main-navigation__item a:hover {
-  color: #cfb6df;
+  color: #FFFFFF;
+  background-color: #382110;
 }
 
 .main-navigation__item.active a {
   color: #cfb6df;
 }
 
-.d-menu {
+.dashbord-menu {
   position: relative;
-  left: 450px;
+  
+  display: inline-block;
+  padding: 0.63rem;
+}
+
+.dashbord-menu ul {
+  list-style: none;
+}
+
+/* Footer section */
+
+.footer {
+  background: #f9f8f4;
+  padding-bottom: 32px;
+  padding-top: 32px;
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.footer-navigation {
+  display: flex;
+}
+
+.footer-navigation > div {
+  margin-right: 20px;
+  padding: 10px;
+}
+
+.footer-navigation__heading {
+  color: #333333;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  margin-top: 0;
+  padding-left: 30px;
+}
+
+.footer-navigation__items {
+  font-size: 14px;
+  list-style: none;
+  margin-bottom: 32px;
+  margin-top: 0;
+}
+
+.footer-navigation__item a {
+  font-size: 0.87rem;
+  color: #382110;
+  text-decoration: none;
+  margin-left: 0;
+}
+
+.socials {
+  /* padding: 5px 0; */
+  margin-left: 1.5rem;
+}
+
+.socials i {
+  color: #00635d;
+  font-size: 1.5rem;
+
 }

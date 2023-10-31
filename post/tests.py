@@ -30,7 +30,7 @@ class PostTestCase(TestCase):
 		user2.set_password('somecode')
 
 		post1 = Post.objects.create(title='Post title 1', body='Post body1', muallif=user1)
-		post2 = Post.objects.create(title='Post title 2', body='Post body2', muallif=user1)
+		post2 = Post.objects.create(title='Post ttle 23', body='Post body2', muallif=user1)
 		post3 = Post.objects.create(title='Post title 3', body='Post body3', muallif=user1)
 		post4 = Post.objects.create(title='Post title 4', body='Post body4', muallif=user2)
 

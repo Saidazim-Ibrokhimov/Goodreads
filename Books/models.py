@@ -9,13 +9,21 @@ class Book(models.Model):
 	slug = models.SlugField(max_length=500, unique=True)
 	description = models.TextField()
 	isbn = models.CharField(max_length=17)
-	# language = models.CharField(max_length=50, default='English')
-	published_date = models.DateTimeField(default=timezone.now)
+	language = models.CharField(max_length=50, default='English')
+	published_date = models.DateField()
 	pages = models.PositiveIntegerField(default=100)
 	cover_pic = models.ImageField(default='default_book_cover.jpg', upload_to='book/')
 
 	def __str__(self):
 		return self.title
+
+class Shelf(models.Model):
+	name = models.CharField(max_length=250)
+	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+	book = models.ManyToManyField(Book)
+
+	def __str__(self):
+		return f"{self.name} | {self.user.username}"
 
 class Editions(models.Model):
 	class BookCover(models.TextChoices):
@@ -27,7 +35,7 @@ class Editions(models.Model):
 	title = models.CharField(max_length=500)
 	description = models.TextField()
 	isbn = models.CharField(max_length=17)
-	pages = models.PositiveIntegerField(default=100)
+	pages = models.PositiveIntegerField(null=True, blank=True)
 	cover = models.CharField(max_length=50, choices=BookCover.choices, default=BookCover.Paperback)
 	language = models.CharField(max_length=20)
 	published_date = models.DateField()
@@ -38,7 +46,7 @@ class Editions(models.Model):
 		
 	class Meta:
 		ordering = ['-published_date']
-		
+
 class Author(models.Model):
 	first_name = models.CharField(max_length=100)
 	last_name = models.CharField(max_length=100)

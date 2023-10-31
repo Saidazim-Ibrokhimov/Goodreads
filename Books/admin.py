@@ -22,6 +22,11 @@ class AuthorAdmin(admin.ModelAdmin):
 
 admin.site.register(Author, AuthorAdmin)
 
+class ShelfAdmin(admin.ModelAdmin):
+	search_fields = ('book__title', 'user__username', 'name') 
+
+admin.site.register(Shelf, ShelfAdmin)
+
 
 class BookAuthorAdmin(admin.ModelAdmin):
 	search_fields = ('author__first_name', 'author__last_name', 'book__title')
