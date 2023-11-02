@@ -1,17 +1,13 @@
 /* Core styles */
 body {
-  background-color: rgba(244,241,234,0.5);
-  font-family: sans-serif;
-  margin: 0px;
+  margin: 0;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  
 }
 
 .container {
   width: 1140px;
   margin: 0 auto;
-}
-
-.to-uppercase {
-  text-transform: uppercase;
 }
 
 .section-subtitle {
@@ -70,11 +66,33 @@ body {
   padding: 6.25rem 1.25rem;
 }
 
-.search-formm {
-  position: fixed;
-  top: 70px;
-  left: 1000px;
-  width: 700px;
+input[type=text], 
+input[type=number], 
+input[type=search], 
+input[type=email], 
+input[type=number], 
+input[type=password], 
+textarea {
+  background: #FFFFFF;
+  border-radius: 3px;
+  border: #DCD6CC 1px solid;
+  color: #333333;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  resize: none;
+  padding: 5px;
+  width: 250px;
+}
+
+input[type=text], 
+input[type=number], 
+input[type=search], 
+input[type=email], 
+input[type=number], 
+input[type=password], 
+textarea {
+  box-shadow: 0 0 4px rgba(185,173,153,0.5);
+  border-color: #B9AD99;
+  outline: 0px;
 }
 
 .fa-brands {
@@ -83,9 +101,6 @@ body {
   font-size: 20px;
 }
 
-.text-none{
-  text-decoration: none;
-}
 .profile_pic{
   width: 200px;
   height: 200px;
@@ -99,7 +114,6 @@ body {
 
 .small-book-cover {
   width: 64px;
-  /* height: 100px; */
 }
 
 
@@ -114,11 +128,13 @@ body {
   border-radius: 50%;
 }
 
+/* Header  */
+
 .main-header {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #ffffff;
+  background-color: #F4F1EA;
   width: 100%;
   box-shadow: 0px 3px 16px 0px rgb(0 0 0 / 10%);
   z-index: 10;
@@ -126,20 +142,15 @@ body {
 
 .main-header__brand {
   display: inline-block;
-  vertical-align: middle;
-  font-size: 200px}
+  order: initial;
+  background: url(/assets/layout/header/goodreads_logo.svg) no-repeat;
+  background-position: center;
+  background-size: 140px 30px;
+  margin: 0 1rem 0.91rem;
+  width: 140px;
+}   
 
-.goodreads {
-  font-size: 30px;
-  color: gold;
-
-}
-.main-header__brand img{
-  width: 64px;
-  border-radius: 50px;
-}
-
-.main-navigation {
+.main-navigation {  
   display: inline-block;
   vertical-align: middle;
 }
@@ -147,26 +158,35 @@ body {
 
 .main-navigation__item {
   display: inline-block;
-  padding: 0.63rem;
+  padding: 0 0.63rem;
+  vertical-align: middle;
+}
+
+.main-navigation__item-form {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .main-navigation__item a {
-  color: #a5364e;
+  display: inline-block;
+  color: #382110;
+  line-height: 2.5rem;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 1rem;
   text-decoration: none;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  font-weight: 500;
+  padding: 0 1rem;
 }
 
 .main-navigation__item a:hover {
-  color: #cfb6df;
+  color: #FFFFFF;
+  background-color: #382110;
 }
 
-.main-navigation__item.active a {
-  color: #cfb6df;
-}
-
-.d-menu {
+.dashbord-menu {
   position: relative;
-  left: 450px;
+  display: inline-block;
+}
+
+.dashbord-menu__items {
+  list-style: none;
 }

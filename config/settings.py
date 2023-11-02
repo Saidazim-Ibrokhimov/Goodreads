@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'hitcount',
     'ckeditor',
     'ckeditor_uploader',
+    'whitenoise.runserver_nostatic',
+
 
     # Local apps
     'Books',
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,7 +95,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
         'USER': 'postgres',
-        'PASSWORD': 'ISBQ1248'
+        'PASSWORD': 'ISBQ1248.'
     }
 }
 

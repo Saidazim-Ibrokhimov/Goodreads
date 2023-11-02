@@ -5,17 +5,6 @@
 {% endblock title %}
 		
 {% block content %}
-<!-- Search form -->
-	<div class="row mb-3 search-formm">
-		<div class="col-4">
-			<form class="d-flex" method="get">
-				<input class="form-control me-3" type="text" name="q" placeholder="Search" value="{{search_query}}">
-				<button style="visibility: hidden;"></button>
-			</form>
-		</div>
-	</div>
-<!-- /Search form -->
-
 <!-- Books list -->
 	{% if page_obj %}
 		{% for book in page_obj.object_list %}
