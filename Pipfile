@@ -12,6 +12,7 @@ celery = "*"
 django-hitcount = "*"
 django-ckeditor = "*"
 whitenoise = "*"
+pytz = "*"
 
 [dev-packages]
 

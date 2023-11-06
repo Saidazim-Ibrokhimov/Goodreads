@@ -9,13 +9,16 @@ class Book(models.Model):
 	slug = models.SlugField(max_length=500, unique=True)
 	description = models.TextField()
 	isbn = models.CharField(max_length=17)
-	# language = models.CharField(max_length=50, default='English')
+	language = models.CharField(max_length=50, default='English')
 	published_date = models.DateTimeField(default=timezone.now)
 	pages = models.PositiveIntegerField(default=100)
 	cover_pic = models.ImageField(default='default_book_cover.jpg', upload_to='book/')
 
 	def __str__(self):
 		return self.title
+	
+
+
 
 class Editions(models.Model):
 	class BookCover(models.TextChoices):

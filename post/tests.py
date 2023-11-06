@@ -1,6 +1,6 @@
 from django.test import TestCase
-from django.utils import timezone
 from django.urls import reverse 
+from datetime import date
 
 from .forms import PostUpdateForm, PostCreateForm
 from users.models import CustomUser
@@ -23,63 +23,38 @@ class PostTestCase(TestCase):
 
 
 	def test_post_list_page(self):
-		user1 = CustomUser.objects.create(username='saidazim', email='aks@gmail.com', first_name='Saidazim')
-		user1.set_password('password')
 
-		user2 = CustomUser.objects.create(username='saidazimboy', email='boy@ls.uz', first_name='Saidazim2004')
-		user2.set_password('somecode')
+		user = CustomUser.objects.create(username='saidazim', first_name='Saidazim')
+		user.set_password('somecode')
+		user.save()
 
-		post1 = Post.objects.create(title='Post title 1', body='Post body1', muallif=user1)
-		post2 = Post.objects.create(title='Post title 2', body='Post body2', muallif=user1)
-		post3 = Post.objects.create(title='Post title 3', body='Post body3', muallif=user1)
-		post4 = Post.objects.create(title='Post title 4', body='Post body4', muallif=user2)
+		db_user = CustomUser.objects.create(username='saidazifam', first_name='Saidazim')
+		db_user.set_password('password')
+		db_user.save()
+
+		post1 = Post.objects.create(title='Post title1', slug='Post-title1', published_date=date(2020, 11, 6), body='Some text1', muallif=db_user, status=Post.Status.published)
+		post2 = Post.objects.create(title='Post title2', slug='Post-title2', published_date=date(2021, 11, 6), body='Some text2', muallif=user, status=Post.Status.published)
+		post3 = Post.objects.create(title='Post title3', slug='Post-title3', published_date=date(2022, 11, 6), body='Some text3', muallif=user, status=Post.Status.published)
+		post4 = Post.objects.create(title='Post title4', slug='Post-title4', published_date=date(2023, 11, 6), body='Some text4', muallif=user, status=Post.Status.published)
 
 		response = self.client.get(reverse('post:list'))
 
-		for post in [post1, post2, post3]:
+		for post in [post4, post2, post3]:
 			self.assertContains(response, post.title)
 			self.assertContains(response, post.muallif)
 			self.assertContains(response, post.body)
-			self.assertEqual(post.muallif, user1)
-		self.assertContains(response, post4.title)
-		self.assertContains(response, post4.body)
-		self.assertContains(response, post4.muallif)
+			self.assertEqual(post.muallif, user)
+		self.assertNotContains(response, post1.title)
+		self.assertNotContains(response, post1.body)
+		self.assertNotContains(response, post1.muallif)
 
 		self.assertTemplateUsed(response, 'blog/list.html')
-
-
-
-
-
-		# user = CustomUser.objects.create(username='saidazim', first_name='Saidazim')
-		# user.set_password('somecode')
-
-		# db_user = CustomUser.objects.create(username='saidazifam', first_name='Saidazim')
-		# db_user.set_password('password')
-
-		# post1 = Post.objects.create(title='Post title1', slug='Post-title1', body='Some text1', muallif=user, status=Post.Status.published)
-		# post2 = Post.objects.create(title='Post title2', slug='Post-title2', body='Some text2', muallif=user, status=Post.Status.published)
-		# post3 = Post.objects.create(title='Post title3', slug='Post-title3', body='Some text3', muallif=user, status=Post.Status.published)
-		# post4 = Post.objects.create(title='Post title4', slug='Post-title4', body='Some text4', muallif=db_user, status=Post.Status.published)
-
-		# response = self.client.get(reverse('post:list'))
-
-		# for post in [post2, post3]:
-		# 	self.assertContains(response, post.title)
-		# 	self.assertContains(response, post.muallif)
-		# 	self.assertContains(response, post.body)
-		# 	self.assertEqual(post.muallif, user)
-		# self.assertNotContains(response, post4.title)
-		# self.assertNotContains(response, post4.body)
-		# self.assertNotContains(response, post4.muallif)
-
-		# self.assertTemplateUsed(response, 'blog/list.html')
 
 
 	def test_post_detail_page(self):
 		user = CustomUser.objects.create(username='saidazim', first_name='Saidazim')
 		user.set_password('somecode')
-		user.set_password('somecode')
+		user.save()
 
 		post = Post.objects.create(title='Post title', slug='Post-title', body='Some text', muallif=user,)
 

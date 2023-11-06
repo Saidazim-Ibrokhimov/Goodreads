@@ -4,8 +4,6 @@ from django.utils import timezone
 from ckeditor.fields import RichTextField
 from django.urls import reverse
 
-from Books.models import Book
-
 # Create your models here.
 
 class Post(models.Model):
