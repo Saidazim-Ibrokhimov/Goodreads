@@ -40,21 +40,21 @@
 
 .edition-items {
   margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .edition-item__image img {
-  width: 130px;
+  width: 100px;
 }
 
 .edition-item {
   display: inline-block;
   width: 10%;
-  margin-right: 3%;
-  box-sizing: border-box ;
+  box-sizing: border-box;
 }
 
 .edition-item__info {
   padding: 0.25rem;
-  /* color: #797979; */
+  color: #797979;
 }
 

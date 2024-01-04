@@ -10,15 +10,39 @@ class Book(models.Model):
 	description = models.TextField()
 	isbn = models.CharField(max_length=17)
 	language = models.CharField(max_length=50, default='English')
-	published_date = models.DateTimeField(default=timezone.now)
+	published_date = models.DateField(null=True, blank=True)
 	pages = models.PositiveIntegerField(default=100)
 	cover_pic = models.ImageField(default='default_book_cover.jpg', upload_to='book/')
 
 	def __str__(self):
 		return self.title
 	
+class Shelf(models.Model):
+	name = models.CharField(max_length=255)
+	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+	DEFAULT_SHELVES = (
+        ('currently_reading', 'Currently Reading'),
+        ('want_to_read', 'Want to Read'),
+        ('read', 'Read'),
+    )
+	
+	default_shelf = models.CharField(
+        max_length=20, choices=DEFAULT_SHELVES, null=True, blank=True
+    )
+	
+	books = models.ManyToManyField(Book, through='BookOnShelf')
+	
+	def __str__(self):
+		return self.name
 
+class BookOnShelf(models.Model):
+	book = models.ForeignKey(Book, on_delete=models.CASCADE)
+	shelf = models.ForeignKey(Shelf, on_delete=models.CASCADE)
+	added_on = models.DateTimeField(auto_now_add=True)
 
+	def __str__(self):
+		return f" {self.book.title}  (on {self.shelf.name})"
+	
 
 class Editions(models.Model):
 	class BookCover(models.TextChoices):
@@ -91,7 +115,7 @@ class BookReview(models.Model):
 	stars_given = models.IntegerField(
 		validators=[MinValueValidator(1), MaxValueValidator(5)]
 		)
-	created_at = models.DateTimeField(default=timezone.now)
+	created_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return f"{self.stars_given} stars for {self.book.title} by {self.user.username}"

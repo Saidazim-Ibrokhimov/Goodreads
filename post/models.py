@@ -13,7 +13,7 @@ class Post(models.Model):
 
 	title = models.CharField(max_length=500)
 	slug = models.SlugField(max_length=500, unique=True)
-	image = models.ImageField(upload_to='blog/images', default='25-may.jpg', null=True, blank=True)
+	image = models.ImageField(upload_to='blog/images/', null=True, blank=True)
 	body = RichTextField()
 	published_date = models.DateTimeField(default=timezone.now)
 	muallif = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

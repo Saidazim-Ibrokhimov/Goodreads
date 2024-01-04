@@ -45,3 +45,15 @@ class BookGenreAdmin(admin.ModelAdmin):
 	search_fields = ('book__title', 'genre__genre_name')
 
 admin.site.register(BookGenre, BookGenreAdmin)
+
+class ShelfAdmin(admin.ModelAdmin):
+	search_fields = ('name', 'default_shelf',)
+	list_display = ('name',)
+
+admin.site.register(Shelf, ShelfAdmin)
+
+class BookOnShelfAdmin(admin.ModelAdmin):
+	search_fields = ('book__title', 'shelf__name',)
+
+
+admin.site.register(BookOnShelf, BookOnShelfAdmin)

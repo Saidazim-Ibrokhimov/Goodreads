@@ -4,4 +4,77 @@
 
 {% block content %}
 	<h1> Home page </h1>
+
+	{% for review in page_obj %}
+	<div class="container posts-content">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="media mb-3">
+							<img src="{{review.user.profile_picture.url}}" class="comment-pic rounded-circle" alt="User's picture">
+							<div class="media-body ml-3">
+								<b>{{review.user.username}}</b> rated this book {{review.stars_given}}
+								<div class="text-muted small">{{review.created_at |date:"M d, Y"}}</div>
+							</div>
+						</div>
+					
+						<p>
+							{{ review.comment }}
+						</p>
+						<img class="small-book-cover " src="{{review.book.cover_pic.url}}">
+					</div>
+					<div class="card-footer">
+						<a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
+							<small class="align-middle">
+								<strong>{{review.book.bookreview_set.count}}</strong> Comments on this book
+							</small>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+
+
+<!-- Pagination -->
+	<nav aria-label="Page navigation example">
+		<ul class="pagination">
+
+			{% if page_obj.has_previous %}
+				<li class="page-item me-1">
+					<a class="page-link" href="?page=1">&laquoFirst</a>
+				</li>
+				<li class="page-item me-1">
+					<a class="page-link" href="?page={{page_obj.previous_page_number}}">
+						Previous
+					</a>
+				</li>
+			{% endif%}
+
+				<li class="page-item active me-1">
+					<a class="page-link" href="#">
+						{{ page_obj.number }}
+					</a>
+				</li>
+
+			{% if page_obj.has_next %}
+				<li class="page-item me-1">
+					<a class="page-link" href="?page={{ page_obj.next_page_number }}">
+					Next
+					</a>
+				</li>
+				<li class="page-item me-1">
+					<a class="page-link" href="?page={{ page_obj.paginator.num_pages}}">
+						Last&raquo
+					</a>
+				</li>
+			{% endif %}
+		</ul>
+	</nav>
+<!-- /Pagination --> 
+	
+
 {% endblock content %}

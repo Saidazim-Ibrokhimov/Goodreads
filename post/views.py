@@ -62,6 +62,7 @@ class BlogCreateView(LoginRequiredMixin, View):
 				muallif=request.user,
 				title=post_form.cleaned_data['title'],
 				body=post_form.cleaned_data['body'],
+				image=post_form.cleaned_data['image'],
 				slug=slugify(post_form.cleaned_data['title'])
 				)
 			messages.success(request, 'Your post will be published within 24 hours!')

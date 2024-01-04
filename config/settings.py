@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # global apps
     'crispy_forms',
     'crispy_bootstrap5',
@@ -44,12 +45,13 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'whitenoise.runserver_nostatic',
-
+    'rest_framework',
 
     # Local apps
     'Books',
     'users',
-    'post'
+    'post',
+    'api',
 
 ]
 

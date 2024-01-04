@@ -104,34 +104,34 @@ class LoginTestCase(TestCase):
 		db_user.save()
 
 	def test_user_succesful_login(self):
-		 self.client.post(
+		self.client.post(
 		 	reverse('users:login'),
 		 		data={
 		 	'username':'ibrohimov',
 		 	'password':'parol'
 		 	}
 		 	)
-		 user = get_user(self.client)
+		user = get_user(self.client)
 
-		 self.assertTrue(user.is_authenticated)
+		self.assertTrue(user.is_authenticated)
 
 	def test_wrong_crediantials(self):
-		 self.client.post(
-		 	reverse('users:login'),
+		self.client.post(
+			reverse('users:login'),
 		 		data={
 		 	'username':'ibrohimovs',
 		 	'password':'parol'
 		 	}
 		 	)
-		 user = get_user(self.client)
+		user = get_user(self.client)
 
-		 self.assertFalse(user.is_authenticated)
+		self.assertFalse(user.is_authenticated)
 
-		 self.client.post(
+		self.client.post(
 		 	reverse('users:login'), data={'username':'ibrohimov','password':'parolm'})
 		
-		 user = get_user(self.client)
-		 self.assertFalse(user.is_authenticated)
+		user = get_user(self.client)
+		self.assertFalse(user.is_authenticated)
 
 	def test_logout(self):
 		self.client.login(username='ibrohimov', password='parol')
