@@ -96,7 +96,7 @@ class BookAuthor(models.Model):
 		return reverse('books:authors_profile', args=[self.author.slug])
 
 class Genre(models.Model):
-	name = models.CharField(max_length=100, unique=True, default='')
+	name = models.CharField(max_length=100, unique=True)
 
 	def __str__(self):
 		return self.name
@@ -119,6 +119,3 @@ class BookReview(models.Model):
 
 	def __str__(self):
 		return f"{self.stars_given} stars for {self.book.title} by {self.user.username}"
-
-	class Meta:
-		ordering = ['-created_at']

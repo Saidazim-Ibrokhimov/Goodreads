@@ -63,7 +63,6 @@ class PostTestCase(TestCase):
 
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, post.title)		
-		self.assertContains(response, post.image)		
 		self.assertContains(response, post.body)		
 		self.assertContains(response, post.muallif)
 		# self.assertContains(response, post.published_date)

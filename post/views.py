@@ -24,7 +24,6 @@ class BlogListView(View):
 
 		page_num = request.GET.get('page', 1)
 		page_obj = paginator.get_page(page_num)
-
 	
 		return render(request, 'blog/list.html', {'page_obj':page_obj})
 
