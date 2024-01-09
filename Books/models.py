@@ -16,15 +16,6 @@ class Book(models.Model):
 
 	def __str__(self):
 		return self.title
-	
-class Shelf(models.Model):
-	name = models.CharField(max_length=255)
-	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-	books = models.ManyToManyField(Book)
-	
-	def __str__(self):
-		return self.name
-	
 
 class Editions(models.Model):
 	class BookCover(models.TextChoices):
@@ -47,6 +38,14 @@ class Editions(models.Model):
 		
 	class Meta:
 		ordering = ['-published_date']
+
+class Shelf(models.Model):
+	name = models.CharField(max_length=50)
+	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+	books = models.ManyToManyField(Book)
+
+	def __str__(self):
+		return f"{self.user} | {self.name}"
 		
 class Author(models.Model):
 	first_name = models.CharField(max_length=100)

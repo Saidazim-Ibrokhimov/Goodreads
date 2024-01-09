@@ -52,5 +52,3 @@ class ShelfAdmin(admin.ModelAdmin):
 
 admin.site.register(Shelf, ShelfAdmin)
 
-class BookOnShelfAdmin(admin.ModelAdmin):
-	search_fields = ('book__title', 'shelf__name',)
