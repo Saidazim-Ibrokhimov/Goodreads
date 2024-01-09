@@ -14,7 +14,10 @@
 						<div class="media mb-3">
 							<img src="{{review.user.profile_picture.url}}" class="comment-pic rounded-circle" alt="User's picture">
 							<div class="media-body ml-3">
-								<b>{{review.user.username}}</b> rated this book {{review.stars_given}}
+								<a class='text-muted' href="{% url 'users:profile_page' review.user.username %}"> 
+									<b>{{review.user.first_name}}</b>
+								</a> rated this book {{review.stars_given}}
+								
 								<div class="text-muted small">{{review.created_at |date:"M d, Y"}}</div>
 							</div>
 						</div>

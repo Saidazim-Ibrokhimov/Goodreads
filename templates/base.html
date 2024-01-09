@@ -88,11 +88,11 @@
 						      	<ul class="dashbord-menu__items">
 						      		<li class="dropdown text-none">
 						         		<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						           			{{user.username | title}}
+						           			{{request.user.username | title}}
 						          		</a>
 						         		<ul class="dropdown-menu">
 						           			<li>
-						           				<a class="dropdown-item {% if request.path == profile_page_url or request.path == profile_edit %} active {% endif%} " href="{% url 'users:profile_page' %}">
+						           				<a class="dropdown-item {% if request.path == profile_page_url or request.path == profile_edit %} active {% endif %} " href="{% url 'users:profile_page' request.user.username %}">
 						           					Profile
 						           				</a>
 						           			</li>

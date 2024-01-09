@@ -145,9 +145,9 @@ class LoginTestCase(TestCase):
 
 class ProfilePageTescase(TestCase):
 	def test_login_required(self):
-		response = self.client.get(reverse('users:profile_page'))
+		response = self.client.get(reverse('users:profile_page', kwargs={'username':'example'}))
 
-		self.assertEqual(response.url, reverse('users:login')  + '?next=/users/profile/')
+		self.assertEqual(response.url, reverse('users:login')  + '?next=/users/profile/example/')
 		self.assertEqual(response.status_code, 302)
 
 	def test_profile_detail(self):
@@ -157,7 +157,7 @@ class ProfilePageTescase(TestCase):
 
 		self.client.login(username='saidazim', password='somecode')
 
-		response = self.client.get(reverse('users:profile_page'))
+		response = self.client.get(reverse('users:profile_page', kwargs={'username':user.username}))
 
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, user.username)
@@ -181,7 +181,7 @@ class ProfilePageTescase(TestCase):
 
 		self.assertEqual(user.first_name, 'Saidazim')
 		self.assertEqual(user.last_name, 'Ibrohimov')
-		self.assertEqual(response.url, reverse('users:profile_page'))
+		self.assertEqual(response.url, reverse('users:profile_page', kwargs={'username':user.username}))
 
 class ContactTestCase(TestCase):
 	def test_login_required(self):

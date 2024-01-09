@@ -10,7 +10,8 @@ from django.contrib.auth.models import User
 
 from django.views import View
 from .forms import UserCreateForm, UserUpdateForm, MessageForm 
-from .models import Contact
+from .models import Contact, CustomUser
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -59,8 +60,10 @@ class LogOutView(LoginRequiredMixin, View):
 
 
 class ProfilePageView(LoginRequiredMixin, View):
-	def get(self, request):
-		return render(request, 'users/profile.html', {'user': request.user})
+	def get(self, request, username):
+		user = get_object_or_404(CustomUser, username=username)
+
+		return render(request, 'users/profile.html', {'user':user})
 
 class ProfileUpdateView(LoginRequiredMixin, View):
 	def get(self, request):
@@ -77,7 +80,7 @@ class ProfileUpdateView(LoginRequiredMixin, View):
 		if user_update_form.is_valid():
 			user_update_form.save()
 			messages.success(request, "You have succesfully updated your profile")
-			return redirect('users:profile_page')
+			return redirect(reverse('users:profile_page', kwargs={'username':request.user.username}))
 		else:
 			return render(request, "users/profile_edit.html", {'form':user_update_form})
 

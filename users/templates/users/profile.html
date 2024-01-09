@@ -13,7 +13,9 @@
 		<span class="name mt-3">{{user.first_name}} {{user.last_name}}</span>
 		<span class="idd">@{{user.username}}</span>
 		<span class="idd">{{user.email}}</span>
-		<div class="d-flex mt-2"><a href="{% url 'users:profile_edit' %}" class="btn btn-dark">Edit profile</a></div>
+		{%if user == request.user%}
+			<div class="d-flex mt-2"><a href="{% url 'users:profile_edit' %}" class="btn btn-dark">Edit profile</a></div>
+		{% endif %}
 		<div class="px-2 rounded mt-4 date"><span class="join">Joined 	{{ user.date_joined | date:"M d, Y"}}</span></div>
 	</div>
 {% endblock content %}
