@@ -1,32 +1,80 @@
 /* Book detail page */
 
+.book-detail__items {
+  display: flex;
+
+}
+
+.book-detail__item {
+  margin-right: 2rem;
+  padding: 10px;
+}
+
+.book-deteail__item-image {
+  margin-bottom: 1.5rem;
+}
+
+.book-detail__item-action {
+  width: 220px;
+}
+
+.book-info {
+  margin-right: 20px;
+}
+
 .detail-action {
   margin-top: 10px;
   width: 90%;
 }
-
+.book-detil__title {
+  font-size: 3.6rem;
+  line-height: 4.6rem;
+  font-family: Copernicus,"Libre Baskerville",Georgia,serif;
+  color: #1e1915;
+  font-weight: 600;
+}
 .book-title {
   text-decoration: none;
   font-size: 1.44rem;
-  font-weight: 500;
-  color: #05364d;
+  color: #333333;
+  font-family: "Merriweather", "Georgia", serif;
+  font-weight: bold;
+  text-transform: capitalize;
 }
 
-.book-detail_info a {
-  font-size: 20px;
+.book-authors a {
+  font-size: 0.87rem;
   font-weight: 400;
   text-decoration: none;
   color: #05364d;
 }
 
-.client-item__rate {
+.book-rating {
   margin-top: 10px;
   color: #FFD805;
 }
 
-.book-genre li {
-  display: inline-block;
+.book-description {
+  line-height: 1.5;
+  font-family: "Merriweather", "Georgia", serif;
+  font-size: 14px;
+  color: #767676;
+  margin-right: 100px;
+  margin-top: 10px;
+}
+
+.genre__details {
+  display: flex;
   list-style: none;
+}
+
+.genre__name {
+  text-decoration: none;
+  color: #1e1915;
+  font-size: 12px;
+  font-weight: 300;
+  padding: 5px;
+  
 }
 
 .book-genre li a {
@@ -38,23 +86,18 @@
 
 /* Editions section */
 
-.edition-items {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.edition-item__image img {
-  width: 100px;
+.edition-item__image img{
+  width: 130px;
 }
 
 .edition-item {
   display: inline-block;
-  width: 10%;
-  box-sizing: border-box;
+  margin: 3%;
+  object-fit: contain;
 }
 
-.edition-item__info {
-  padding: 0.25rem;
-  color: #797979;
-}
+/* Reviews */
 
+.reviews {
+  width: 50%;
+}

@@ -20,16 +20,6 @@ class Book(models.Model):
 class Shelf(models.Model):
 	name = models.CharField(max_length=255)
 	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-	DEFAULT_SHELVES = (
-        ('currently_reading', 'Currently Reading'),
-        ('want_to_read', 'Want to Read'),
-        ('read', 'Read'),
-    )
-	
-	default_shelf = models.CharField(
-        max_length=20, choices=DEFAULT_SHELVES, null=True, blank=True
-    )
-	
 	books = models.ManyToManyField(Book, through='BookOnShelf')
 	
 	def __str__(self):

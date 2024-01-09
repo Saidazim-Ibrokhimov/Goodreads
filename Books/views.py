@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator 
+from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Book, BookReview, Author, BookAuthor, Genre, BookGenre, Editions
+from .models import Book, BookReview, Author, BookAuthor, Genre, BookGenre, Editions, Shelf
 from .forms import BookReviewForm
 
 # Create your views here.
@@ -121,6 +122,14 @@ class AuthorProfileView(View):
 		author = Author.objects.get(slug=author_slug)
 		books = author.bookauthor_set.all()
 		return render(request, 'authors/author_page.html', {'author':author, 'books':books})
+	
+@login_required
+def create_shelf(request):
+  if request.method == 'POST':
+    name = request.POST['name']
+    shelf = Shelf.objects.create(name=name, user=request.user)
+    return redirect('home_page')
+  return render(request, 'books/detail.html')
 
 
 
