@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator 
 from django.contrib.auth.decorators import login_required
 from django.views import View
@@ -43,6 +43,10 @@ class BookDetailView(View):
 				'book_genre':book_genre,
 				'editions':editions
 			}
+		
+		if request.user.is_authenticated:
+			shelves = Shelf.objects.filter(user=request.user)
+			context['shelves'] = shelves
  
 		return render(request, 'books/detail.html', context )
 
@@ -133,8 +137,15 @@ def create_shelf(request):
 
 
 
+@login_required
+def add_book_to_shelf(request, book_id, shelf_id):
+  book = get_object_or_404(Book, id=book_id)
+  shelf = get_object_or_404(Shelf, id=shelf_id)
 
+  shelf.books.add(book)
+  shelf.save()
 
+  return redirect(reverse('books:detail', kwargs={'book_slug':book.slug}))
 
 
 

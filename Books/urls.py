@@ -10,6 +10,7 @@ from .views import(
  BookGenresView,
  BookEditionsView,
  create_shelf,
+ add_book_to_shelf,
  )
  
 
@@ -25,5 +26,6 @@ urlpatterns = [
 	path('delete-review-of/<slug:book_slug>/review/<int:review_id>/', DeleteReviewView.as_view(), name='delete-review'),
 	path('genres/<int:id>/', BookGenresView.as_view(), name='genre'),
 	path('editions/<int:id>/', BookEditionsView.as_view(), name='edition'),
-    path('create-shelf/', create_shelf, name='create-shelf')
+    path('create-shelf/', create_shelf, name='create-shelf'),
+    path('add-book-to-shelf/<int:book_id>/<int:shelf_id>', add_book_to_shelf, name='add-book-to-shelf'),
 ]	

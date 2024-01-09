@@ -20,18 +20,10 @@ class Book(models.Model):
 class Shelf(models.Model):
 	name = models.CharField(max_length=255)
 	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-	books = models.ManyToManyField(Book, through='BookOnShelf')
+	books = models.ManyToManyField(Book)
 	
 	def __str__(self):
 		return self.name
-
-class BookOnShelf(models.Model):
-	book = models.ForeignKey(Book, on_delete=models.CASCADE)
-	shelf = models.ForeignKey(Shelf, on_delete=models.CASCADE)
-	added_on = models.DateTimeField(auto_now_add=True)
-
-	def __str__(self):
-		return f" {self.book.title}  (on {self.shelf.name})"
 	
 
 class Editions(models.Model):
